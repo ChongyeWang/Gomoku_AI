@@ -7,14 +7,6 @@ package Game;
 public class MiniMaxEvaluate {
     public static int minimaxEvaluate(Piece[][] board, String targetMax){
     	
-    	/*
-    	int check1 = minimaxCheckWin(board, targetMax);
-    	if(Math.abs(check1) == 10000){
-    		return check1;
-    	}
-    	//return 0;
-    	*/
-    	
     	int score = 0;
     	
     	score = score + minimaxCheckWin(board, targetMax);
@@ -429,7 +421,7 @@ public class MiniMaxEvaluate {
     				&& board[i][j + 3] != null && board[i][j + 3].getColor().equals(player)
     				&& board[i][j + 4] != null && board[i][j + 4].getColor().equals(player)
     				){
-    				return 10000;
+    				return 100000;
     			}
     			else if(board[i][j] != null && board[i][j].getColor().equals(opponent) 
     				&& board[i][j + 1] != null && board[i][j + 1].getColor().equals(opponent)
@@ -437,7 +429,7 @@ public class MiniMaxEvaluate {
     				&& board[i][j + 3] != null && board[i][j + 3].getColor().equals(opponent)
     				&& board[i][j + 4] != null && board[i][j + 4].getColor().equals(opponent)
     				){
-    				return -10000;
+    				return -100000;
     			}
     		}
     	}
@@ -451,7 +443,7 @@ public class MiniMaxEvaluate {
     				&& board[i + 3][j] != null && board[i + 3][j].getColor().equals(player)
     				&& board[i + 4][j] != null && board[i + 4][j].getColor().equals(player)
     				){
-                    return 10000;
+                    return 100000;
     			}
     			else if(board[i][j] != null && board[i][j].getColor().equals(opponent) 
     				&& board[i + 1][j] != null && board[i + 1][j].getColor().equals(opponent)
@@ -459,7 +451,7 @@ public class MiniMaxEvaluate {
     				&& board[i + 3][j] != null && board[i + 3][j].getColor().equals(opponent)
     				&& board[i + 4][j] != null && board[i + 4][j].getColor().equals(opponent)
     				){
-    				return -10000;
+    				return -100000;
     			}
     		}
     	}
@@ -473,7 +465,7 @@ public class MiniMaxEvaluate {
     				&& board[i + 3][j + 3] != null && board[i + 3][j + 3].getColor().equals(player)
     				&& board[i + 4][j + 4] != null && board[i + 4][j + 4].getColor().equals(player)
     				){
-    				return 10000;
+    				return 100000;
     			}
     			else if(board[i][j] != null && board[i][j].getColor().equals(opponent) 
     				&& board[i + 1][j + 1] != null && board[i + 1][j + 1].getColor().equals(opponent)
@@ -481,7 +473,7 @@ public class MiniMaxEvaluate {
     				&& board[i + 3][j + 3] != null && board[i + 3][j + 3].getColor().equals(opponent)
     				&& board[i + 4][j + 4] != null && board[i + 4][j + 4].getColor().equals(opponent)
     				){
-    				return -10000;
+    				return -100000;
     			}
 
     		}
@@ -496,7 +488,7 @@ public class MiniMaxEvaluate {
     				&& board[i + 3][j - 3] != null && board[i + 3][j - 3].getColor().equals(player)
     				&& board[i + 4][j - 4] != null && board[i + 4][j - 4].getColor().equals(player)
     				){
-    				return 10000;
+    				return 100000;
     			}
     			else if(board[i][j] != null && board[i][j].getColor().equals(opponent) 
     				&& board[i + 1][j - 1] != null && board[i + 1][j - 1].getColor().equals(opponent)
@@ -504,7 +496,7 @@ public class MiniMaxEvaluate {
     				&& board[i + 3][j - 3] != null && board[i + 3][j - 3].getColor().equals(opponent)
     				&& board[i + 4][j - 4] != null && board[i + 4][j - 4].getColor().equals(opponent)
     				){
-    				return -10000;
+    				return -100000;
     			}
 
     		}

@@ -20,11 +20,11 @@ import Game.Piece;
 
 
 
-public class BoardPanel extends JPanel implements MouseListener{
+public class TwoPlayers extends JPanel implements MouseListener{
 	private ImageIcon blackPiece = new ImageIcon("res/blackPiece.png");
 	private ImageIcon whitePiece = new ImageIcon("res/whitePiece.png");
 	
-	public BoardPanel(){
+	public TwoPlayers(){
     	this.setLayout(null);
 		this.setBounds(0, 0, 650, 650);
         addMouseListener(this);

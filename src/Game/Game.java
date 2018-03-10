@@ -11,6 +11,9 @@ public class Game {
     private boolean gameEnd;
     public Piece[][] board = new Piece[13][13];
     
+    private static int minimax_count = 0;//node expanded for minimax
+    private static int alphabeta_count = 0;//node expanded for alphabeta
+    
     /**
      * Game constructor
      */
@@ -712,7 +715,7 @@ public class Game {
     	
     }//end of reflex agent rule four
     
-    
+
     /**
      * Minimax method.
      * @param depth
@@ -734,6 +737,7 @@ public class Game {
     		for(int j = 0; j < 7; j++){
     			if(board[i][j] == null){
     				board[i][j] = new Piece(j, i, player);
+    				minimax_count++;
     				int currBest = minimax(this.board, depth, targetMin, targetMin, targetMax);
     				board[i][j] = null;
     				if(currBest > bestValue){
@@ -744,8 +748,7 @@ public class Game {
     			}
     		}
     	}
-    	System.out.println(player);
-    	System.out.println(bestValue);
+    	System.out.println("Minimax : " + minimax_count);
     	
     	this.movePiece(bestX, bestY);
     }
@@ -773,6 +776,7 @@ public class Game {
     			for(int j = 0; j < 7; j++){
     				if(board[i][j] == null){
     					this.board[i][j] = new Piece(j, i, targetMax);
+    					minimax_count++;
     					bestValue = Math.max(bestValue, minimax(this.board, depth - 1, targetMin, targetMin, targetMax));
     					this.board[i][j] = null;
     				}
@@ -786,8 +790,108 @@ public class Game {
     			for(int j = 0; j < 7; j++){
     				if(board[i][j] == null){
     					this.board[i][j] = new Piece(j, i, targetMin);
+    					minimax_count++;
     					bestValue = Math.min(bestValue, minimax(this.board, depth - 1, targetMax, targetMin, targetMax));
     					this.board[i][j] = null;
+    				}
+    			}
+    		}
+    		return bestValue;
+    	}
+    }
+    
+    
+    /**
+     * Alpha beta method.
+     * @param depth
+     * @param player
+     */
+    public void alphaBetaMove(int depth, String player){
+    	int bestX = -1;
+    	int bestY = -1;
+    	int bestValue = Integer.MIN_VALUE;
+    	int alpha = Integer.MIN_VALUE;
+    	int beta = Integer.MAX_VALUE;
+    	String targetMax = player;
+    	String targetMin = "";
+    	if(targetMax.equals("black")){
+    		targetMin = "white";
+    	}
+    	else{
+    		targetMin = "black";
+    	}
+    	for(int i = 0; i < 7; i++){
+    		for(int j = 0; j < 7; j++){
+    			if(board[i][j] == null){
+    				board[i][j] = new Piece(j, i, player);
+    				alphabeta_count++;
+    				int currBest = alphaBeta(this.board, depth, alpha, beta, targetMin, targetMin, targetMax);
+    				board[i][j] = null;
+    				if(currBest > bestValue){
+    					bestX = j;
+    					bestY = i;
+    					bestValue = currBest;
+    				}
+    				if(beta <= alpha){
+    					this.movePiece(bestX, bestY);
+    					return;
+    				}
+    			}
+    		}
+    	}
+    	System.out.println("AlphaBeta : " + alphabeta_count);
+    	
+    	this.movePiece(bestX, bestY);
+    }
+    
+    
+    /**
+     * alpha beta move helper function
+     * @param board
+     * @param depth
+     * @param player
+     * @param opponent
+     * @param targetMax
+     * @return
+     */
+    public int alphaBeta(Piece[][] board, int depth, int alpha, int beta, String player, String targetMin, String targetMax){
+
+    	if(depth == 0 || this.checkWinner()){
+    		 int v = MiniMaxEvaluate.minimaxEvaluate(board, targetMax);
+    		 return v;
+    	}
+
+    	if(player.equals(targetMax)){
+    		int bestValue = Integer.MIN_VALUE;
+    		for(int i = 0; i < 7; i++){
+    			for(int j = 0; j < 7; j++){
+    				if(board[i][j] == null){
+    					this.board[i][j] = new Piece(j, i, targetMax);
+    					alphabeta_count++;
+    					bestValue = Math.max(bestValue, alphaBeta(this.board, depth - 1, alpha, beta, targetMin, targetMin, targetMax));
+    					alpha = Math.max(alpha, bestValue);
+    					this.board[i][j] = null;
+    				}
+    				if(beta <= alpha){
+    					return bestValue;
+    				}
+    			}
+    		}
+    		return bestValue;	
+    	}
+    	else{
+    		int bestValue = Integer.MAX_VALUE;
+    		for(int i = 0; i < 7; i++){
+    			for(int j = 0; j < 7; j++){
+    				if(board[i][j] == null){
+    					this.board[i][j] = new Piece(j, i, targetMin);
+    					alphabeta_count++;
+    					bestValue = Math.min(bestValue, alphaBeta(this.board, depth - 1, alpha, beta, targetMax, targetMin, targetMax));
+    					beta = Math.min(beta, bestValue);
+    					this.board[i][j] = null;
+    				}
+    				if(beta <= alpha){
+    					return bestValue;
     				}
     			}
     		}

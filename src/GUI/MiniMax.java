@@ -78,7 +78,8 @@ public class MiniMax extends JPanel implements ActionListener{
 	    		game.reflexAgentMove();
 	    	}
 	    	else{
-	    		game.minimaxMove(2, "white");
+	    		//game.minimaxMove(2, "white");
+	    	    game.alphaBetaMove(2, "white");
 	    	}
     	}
     }
