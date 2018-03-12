@@ -1,6 +1,7 @@
 /**
  * Training data using linear regression
  * in supervised learning
+ * @author Chongye Wang
  */
 package Game;
 
