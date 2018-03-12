@@ -398,7 +398,7 @@ public class MiniMaxEvaluate {
     
     /**
      * Check if the playler has already won
-     * if yes, return score 10000
+     * if yes, return score 100000
      * @param board
      * @param player
      * @return int
