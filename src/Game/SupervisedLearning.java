@@ -23,7 +23,7 @@ public class SupervisedLearning {
 		
 		ArrayList<double[]> matrix = new ArrayList<double[]>();
 		ArrayList<Double> result = new ArrayList<Double>();
-		//Generate 10000 game
+
 		Random random = new Random();
 		for(int i = 0; i < 3000; i++){
 			Game game = new Game();
@@ -59,25 +59,104 @@ public class SupervisedLearning {
 		}
 	}
 	
-public static int evaluate(Piece[][] board, String player, double[] num){
-    	
+	
+	/**
+	 * Generate the feature vector and
+     * check if there are winning conditions
+	 * @param board
+	 * @param player
+	 * @param num
+	 * @return
+	 */
+    public static int evaluate(Piece[][] board, String player, double[] num){	
     	int score = 0;
-    	
-    	score = score + minimaxCheckWin(board, player, num);
-    	score = score + minimaxCheckNumFour(board, player, num);
-    	score = score + minimaxCheckNumThree(board, player, num);
-        score = score + minimaxCheckNumTwo(board, player, num);
-    	
-    	for(int i = 0; i < 7; i++){
-    		for(int j = 0; j < 7; j++){
+    	score = score + CheckWin(board, player, num);
+    	score = score + CheckNumFour(board, player, num);
+    	score = score + CheckNumThree(board, player, num);
+        score = score + CheckNumTwo(board, player, num);
+        //score = score + CheckNumOne(board, player, num);
+    	return score;
+	}
+    
+    
+    /**
+     * Check one piece
+     * @param board
+     * @param player
+     * @return 0
+     */
+    public static int CheckNumOne(Piece[][] board, String player, double[] num){
+    	for(int i = 0; i <= 6; i++){
+    		for(int j = 0; j <= 6; j++){
     			if(board[i][j] != null && board[i][j].getColor().equals(player)){
-					score += 1;
-					num[4] += 1;
+    				num[4] += 1;
     			}
-    	
     		}
     	}
-    	return score;
+    	return 0;
+    }
+    
+    
+    /**
+     * Check continuing two
+     * @param board
+     * @param player
+     * @return 0
+     */
+    public static int CheckNumTwo(Piece[][] board, String player, double[] num){
+    	
+    	//horizontal
+    	for(int i = 0; i <= 6; i++){
+    		for(int j = 1; j <= 4; j++){
+    			if(board[i][j] != null && board[i][j].getColor().equals(player) 
+    				&& board[i][j + 1] != null && board[i][j + 1].getColor().equals(player)
+    				){
+					if(board[i][j - 1] == null && board[i][j + 2] == null){
+						num[3] += 1;
+					}
+    			}
+    		}
+    	}
+    	
+    	//Vertical
+    	for(int i = 1; i <= 4; i++){
+    		for(int j = 0; j <= 6; j++){
+    			if(board[i][j] != null && board[i][j].getColor().equals(player) 
+    				&& board[i + 1][j] != null && board[i + 1][j].getColor().equals(player)
+    				){
+    				if(board[i - 1][j] == null && board[i + 2][j] == null){
+    					num[3] += 1;
+    				}
+    			}
+    		}
+    	}
+    	
+    	//Diagonal 1
+    	for(int i = 1; i <= 4; i++){
+    		for(int j = 1; j <= 4; j++){
+    			if(board[i][j] != null && board[i][j].getColor().equals(player) 
+    				&& board[i + 1][j + 1] != null && board[i + 1][j + 1].getColor().equals(player)
+    				){
+					if(board[i - 1][j - 1] == null && board[i + 2][j + 2] == null){
+						num[3] += 1;
+					}
+    			}
+    		}
+    	}
+    	
+    	//Diagonal 2
+    	for(int i = 1; i <= 4; i++){
+    		for(int j = 5; j >= 2; j--){
+    			if(board[i][j] != null && board[i][j].getColor().equals(player) 
+    				&& board[i + 1][j - 1] != null && board[i + 1][j - 1].getColor().equals(player)
+    				){
+    				if(board[i - 1][j + 1] == null && board[i + 2][j - 2] == null){
+    					num[3] += 1;
+					}
+    			}
+    		}
+    	}
+    	return 0;
     }
     
     
@@ -85,11 +164,77 @@ public static int evaluate(Piece[][] board, String player, double[] num){
      * Check continuing three
      * @param board
      * @param player
-     * @return score
+     * @return 0
      */
-    public static int minimaxCheckNumFour(Piece[][] board, String player, double[] num){
+    public static int CheckNumThree(Piece[][] board, String player, double[] num){
+
+    	//horizontal
+    	for(int i = 0; i <= 6; i++){
+    		for(int j = 1; j <= 3; j++){
+    			if(board[i][j] != null && board[i][j].getColor().equals(player) 
+    				&& board[i][j + 1] != null && board[i][j + 1].getColor().equals(player)
+    				&& board[i][j + 2] != null && board[i][j + 2].getColor().equals(player)
+    				){
+					if(board[i][j - 1] == null && board[i][j + 3] == null){
+						num[2] += 1;
+					}
+    			}
+    		}
+    	}
     	
-    	int score = 0;
+    	//Vertical
+    	for(int i = 1; i <= 3; i++){
+    		for(int j = 0; j <= 6; j++){
+    			if(board[i][j] != null && board[i][j].getColor().equals(player) 
+    				&& board[i + 1][j] != null && board[i + 1][j].getColor().equals(player)
+    				&& board[i + 2][j] != null && board[i + 2][j].getColor().equals(player)
+    				){
+    				if(board[i - 1][j] == null && board[i + 3][j] == null){
+    					num[2] += 1;
+    				}
+    			}
+    		}
+    	}
+    	
+    	//Diagonal 1
+    	for(int i = 1; i <= 3; i++){
+    		for(int j = 1; j <= 3; j++){
+    			if(board[i][j] != null && board[i][j].getColor().equals(player) 
+    				&& board[i + 1][j + 1] != null && board[i + 1][j + 1].getColor().equals(player)
+    				&& board[i + 2][j + 2] != null && board[i + 2][j + 2].getColor().equals(player)
+    				){
+					if(board[i - 1][j - 1] == null && board[i + 3][j + 3] == null){
+						num[2] += 1;
+					}
+    			}
+    		}
+    	}
+    	
+    	//Diagonal 2
+    	for(int i = 1; i <= 3; i++){
+    		for(int j = 5; j >= 3; j--){
+    			if(board[i][j] != null && board[i][j].getColor().equals(player) 
+    				&& board[i + 1][j - 1] != null && board[i + 1][j - 1].getColor().equals(player)
+    				&& board[i + 2][j - 2] != null && board[i + 2][j - 2].getColor().equals(player)
+    				){
+    				if(board[i - 1][j + 1] == null && board[i + 3][j - 3] == null){
+    					num[2] += 1;
+					}
+    			}
+    		}
+    	}
+    	return 0;
+    }
+    
+    
+    /**
+     * Check continuing Four
+     * @param board
+     * @param player
+     * @return 0
+     */
+    public static int CheckNumFour(Piece[][] board, String player, double[] num){
+
     	//horizontal
     	for(int i = 0; i <= 6; i++){
     		for(int j = 1; j <= 2; j++){
@@ -99,7 +244,6 @@ public static int evaluate(Piece[][] board, String player, double[] num){
     				&& board[i][j + 3] != null && board[i][j + 3].getColor().equals(player)
     				){
 					if(board[i][j - 1] == null && board[i][j + 4] == null){
-						score += 3000;
 						num[1] += 1;
 					}
     			}
@@ -115,7 +259,6 @@ public static int evaluate(Piece[][] board, String player, double[] num){
     				&& board[i + 3][j] != null && board[i + 3][j].getColor().equals(player)
     				){
     				if(board[i - 1][j] == null && board[i + 4][j] == null){
-    					score += 3000;
     					num[1] += 1;
     				}
     			}
@@ -131,7 +274,6 @@ public static int evaluate(Piece[][] board, String player, double[] num){
     				&& board[i + 3][j + 3] != null && board[i + 3][j + 3].getColor().equals(player)
     				){
 					if(board[i - 1][j - 1] == null && board[i + 4][j + 4] == null){
-						score += 3000;
 						num[1] += 1;
 					}
     			}
@@ -147,178 +289,37 @@ public static int evaluate(Piece[][] board, String player, double[] num){
     				&& board[i + 3][j - 3] != null && board[i + 3][j - 3].getColor().equals(player)
     				){
     				if(board[i - 1][j + 1] == null && board[i + 4][j - 4] == null){
-    					score += 3000;
     					num[1] += 1;
 					}
     			}
     		}
     	}
-    	return score;
+    	
+    	return 0;
+    	
     }//end of check four
     
     
     /**
-     * Check continuing two
+     * Check continuing five
      * @param board
      * @param player
-     * @return
+     * @return 1 or 0
      */
-    public static int minimaxCheckNumTwo(Piece[][] board, String player, double[] num){
-    	
-    	int score = 0;
-    	
-    	//horizontal
-    	for(int i = 0; i <= 6; i++){
-    		for(int j = 1; j <= 4; j++){
-    			if(board[i][j] != null && board[i][j].getColor().equals(player) 
-    				&& board[i][j + 1] != null && board[i][j + 1].getColor().equals(player)
-    				){
-					if(board[i][j - 1] == null && board[i][j + 2] == null){
-						score += 50;
-						num[3] += 1;
-					}
-    			}
-    		}
-    	}
-    	
-    	//Vertical
-    	for(int i = 1; i <= 4; i++){
-    		for(int j = 0; j <= 6; j++){
-    			if(board[i][j] != null && board[i][j].getColor().equals(player) 
-    				&& board[i + 1][j] != null && board[i + 1][j].getColor().equals(player)
-    				){
-    				if(board[i - 1][j] == null && board[i + 2][j] == null){
-    					score += 50;
-    					num[3] += 1;
-    				}
-    			}
-    		}
-    	}
-    	
-    	//Diagonal 1
-    	for(int i = 1; i <= 4; i++){
-    		for(int j = 1; j <= 4; j++){
-    			if(board[i][j] != null && board[i][j].getColor().equals(player) 
-    				&& board[i + 1][j + 1] != null && board[i + 1][j + 1].getColor().equals(player)
-    				){
-					if(board[i - 1][j - 1] == null && board[i + 2][j + 2] == null){
-						score += 50;
-						num[3] += 1;
-					}
-    			}
-    		}
-    	}
-    	
-    	//Diagonal 2
-    	for(int i = 1; i <= 4; i++){
-    		for(int j = 5; j >= 2; j--){
-    			if(board[i][j] != null && board[i][j].getColor().equals(player) 
-    				&& board[i + 1][j - 1] != null && board[i + 1][j - 1].getColor().equals(player)
-    				){
-    				if(board[i - 1][j + 1] == null && board[i + 2][j - 2] == null){
-    					score += 50;
-    					num[3] += 1;
-					}
-    			}
-    		}
-    	}
-    	return score;
-    }
-    
-    /**
-     * Check continuing three
-     * @param board
-     * @param player
-     * @return score
-     */
-    public static int minimaxCheckNumThree(Piece[][] board, String player, double[] num){
-
-    	int score = 0;
-    	//horizontal
-    	for(int i = 0; i <= 6; i++){
-    		for(int j = 1; j <= 3; j++){
-    			if(board[i][j] != null && board[i][j].getColor().equals(player) 
-    				&& board[i][j + 1] != null && board[i][j + 1].getColor().equals(player)
-    				&& board[i][j + 2] != null && board[i][j + 2].getColor().equals(player)
-    				){
-					if(board[i][j - 1] == null && board[i][j + 3] == null){
-						score += 200;
-						num[2] += 1;
-					}
-    			}
-    		}
-    	}
-    	
-    	//Vertical
-    	for(int i = 1; i <= 3; i++){
-    		for(int j = 0; j <= 6; j++){
-    			if(board[i][j] != null && board[i][j].getColor().equals(player) 
-    				&& board[i + 1][j] != null && board[i + 1][j].getColor().equals(player)
-    				&& board[i + 2][j] != null && board[i + 2][j].getColor().equals(player)
-    				){
-    				if(board[i - 1][j] == null && board[i + 3][j] == null){
-    					score += 200;
-    					num[2] += 1;
-    				}
-    			}
-    		}
-    	}
-    	
-    	//Diagonal 1
-    	for(int i = 1; i <= 3; i++){
-    		for(int j = 1; j <= 3; j++){
-    			if(board[i][j] != null && board[i][j].getColor().equals(player) 
-    				&& board[i + 1][j + 1] != null && board[i + 1][j + 1].getColor().equals(player)
-    				&& board[i + 2][j + 2] != null && board[i + 2][j + 2].getColor().equals(player)
-    				){
-					if(board[i - 1][j - 1] == null && board[i + 3][j + 3] == null){
-						score += 200;
-						num[2] += 1;
-					}
-    			}
-    		}
-    	}
-    	
-    	//Diagonal 2
-    	for(int i = 1; i <= 3; i++){
-    		for(int j = 5; j >= 3; j--){
-    			if(board[i][j] != null && board[i][j].getColor().equals(player) 
-    				&& board[i + 1][j - 1] != null && board[i + 1][j - 1].getColor().equals(player)
-    				&& board[i + 2][j - 2] != null && board[i + 2][j - 2].getColor().equals(player)
-    				){
-    				if(board[i - 1][j + 1] == null && board[i + 3][j - 3] == null){
-    					score += 200;
-    					num[2] += 1;
-					}
-    			}
-    		}
-    	}
-    	return score;
-    }
-    
-    
-    /**
-     * Check if the playler has already won
-     * if yes, return score 100000
-     * @param board
-     * @param player
-     * @return int
-     */
-    public static int minimaxCheckWin(Piece[][] board, String player, double[] num){
+    public static int CheckWin(Piece[][] board, String player, double[] num){
     	
     	int score = 0;
  
     	//horizontal
     	for(int i = 0; i <= 6; i++){
     		for(int j = 0; j <= 2; j++){
-    			
     			if(board[i][j] != null && board[i][j].getColor().equals(player) 
     				&& board[i][j + 1] != null && board[i][j + 1].getColor().equals(player)
     				&& board[i][j + 2] != null && board[i][j + 2].getColor().equals(player)
     				&& board[i][j + 3] != null && board[i][j + 3].getColor().equals(player)
     				&& board[i][j + 4] != null && board[i][j + 4].getColor().equals(player)
     				){
-    				score += 100000;
+    				score = 1;
 					num[0] += 1;
     			}
     		}
@@ -333,7 +334,7 @@ public static int evaluate(Piece[][] board, String player, double[] num){
     				&& board[i + 3][j] != null && board[i + 3][j].getColor().equals(player)
     				&& board[i + 4][j] != null && board[i + 4][j].getColor().equals(player)
     				){
-    				score += 100000;
+    				score = 1;
 					num[0] += 1;
     			}
     		}
@@ -348,7 +349,7 @@ public static int evaluate(Piece[][] board, String player, double[] num){
     				&& board[i + 3][j + 3] != null && board[i + 3][j + 3].getColor().equals(player)
     				&& board[i + 4][j + 4] != null && board[i + 4][j + 4].getColor().equals(player)
     				){
-    				score += 100000;
+    				score = 1;
 					num[0] += 1;
     			}
     		}
@@ -363,7 +364,7 @@ public static int evaluate(Piece[][] board, String player, double[] num){
     				&& board[i + 3][j - 3] != null && board[i + 3][j - 3].getColor().equals(player)
     				&& board[i + 4][j - 4] != null && board[i + 4][j - 4].getColor().equals(player)
     				){
-    				score += 100000;
+    				score = 1;
 					num[0] += 1;
     			}
     		}

@@ -12,7 +12,7 @@ public class Main {
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setBounds(0, 0, 650, 672);
         frame.setLayout(null);
-        frame.add(new MiniMax());
+        frame.add(new User_vs_AI());
         frame.setVisible(true);  
     }
 }
